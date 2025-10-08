@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Layout, Menu, Drawer, Avatar, Dropdown, Space, Grid } from "antd";
 import { MenuOutlined, CarOutlined, UserOutlined, LogoutOutlined } from "@ant-design/icons";
 import { NavLink, useNavigate } from "react-router-dom";
-import { logout } from "../../../features/userSlice"; // ✅ adjust the path if needed
+import { logout } from "../../../features/userSlice"; 
 import "./style.scss";
 
 const { Header } = Layout;
@@ -14,47 +14,63 @@ const GuestHeader = () => {
   const screens = useBreakpoint();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const currentUser = useSelector((state) => state.user.current);
   const isLoggedIn = Boolean(currentUser && Object.keys(currentUser).length > 0);
 
-  // 🧹 LOGOUT FUNCTION
   const handleLogout = () => {
     dispatch(logout());
-    navigate("/login"); // redirect to login
+    navigate("/login"); 
   };
 
   const navItems = [
-    { key: "home", label: <NavLink to="/">Home</NavLink> },
-    { key: "cars", label: <NavLink to="/cars">Stock Cars</NavLink> },
-    { key: "terms", label: <NavLink to="/terms">Our Terms</NavLink> },
-    { key: "about", label: <NavLink to="/about">About Us</NavLink> },
-    { key: "admin", label: <NavLink to="/admin">Admin</NavLink> },
-    { key: "owner", label: <NavLink to="/owner/dashboard">Owner</NavLink> },
+    { 
+      key: "home", 
+      label: <NavLink to="/">Home</NavLink> },
+    { 
+      key: "cars", 
+      label: <NavLink to="/cars">Stock Cars</NavLink> },
+    { 
+      key: "terms", 
+      label: <NavLink to="/terms">Our Terms</NavLink> },
+    { 
+      key: "about", 
+      label: <NavLink to="/about">About Us</NavLink> },
+    { 
+      key: "admin", 
+      label: <NavLink to="/admin">Admin</NavLink> },
+    { 
+      key: "owner", 
+      label: <NavLink to="/owner/dashboard">Owner</NavLink> },
   ];
 
   const userMenu = {
     items: [
-      { key: "profile", label: <NavLink to="/profile">Trang cá nhân</NavLink>, icon: <UserOutlined /> },
-      { type: "divider" },
-      { key: "logout", label: "Đăng xuất", icon: <LogoutOutlined />, onClick: handleLogout },
+      { 
+        key: "profile", 
+        label: <NavLink to="/profile">Trang cá nhân</NavLink>, icon: <UserOutlined /> },
+      { 
+        type: "divider" },
+      { 
+        key: "logout", 
+        label: "Đăng xuất", icon: <LogoutOutlined />, onClick: handleLogout },
     ],
   };
 
   return (
     <Header className="app-header">
+
       <div className="logo">
-        <CarOutlined /> <span>CARHUB</span>
+        <CarOutlined /> <span>CoEV</span>
       </div>
 
-      {/* 🖥️ Desktop menu */}
+      {/* Desktop menu */}
       {screens.md && (
         <div className="nav-menu">
           <Menu theme="dark" mode="horizontal" items={navItems} />
         </div>
       )}
 
-      {/* 🧍‍♂️ User / menu toggle */}
+      {/* User / menu toggle */}
       <div className="header-right">
         {screens.md ? (
           isLoggedIn ? (
@@ -74,7 +90,7 @@ const GuestHeader = () => {
         )}
       </div>
 
-      {/* 📱 Mobile drawer */}
+      {/* Mobile drawer */}
       {!screens.md && (
         <Drawer
           title="Menu"

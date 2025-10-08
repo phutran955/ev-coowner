@@ -15,7 +15,7 @@ const OwnerSidebar = ({ collapsed }) => {
           <div className="logo-icon">🚗</div>
         ) : (
           <div className="logo-text">
-            <span className="brand">CarHub</span>
+            <span className="brand">CoEV</span>
           </div>
         )}
       </div>

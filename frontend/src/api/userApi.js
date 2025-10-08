@@ -4,12 +4,11 @@ const userApi = {
 
   // 🧾 Đăng ký người dùng mới
   register(data) {
-    const url = "/user"; // resource trên MockAPI
-    //const url = "/auth/register";
+    const url = "/user"; // resource trên MockAPI   //const url = "/auth/register";
     return axiosClient.post(url, data);
   },
 
-  // 🧩 Login (sẽ xử lý sau nếu cần)
+  // 🧩 Login 
   login(data) {
     const url = "/user";
     return axiosClient.post(url, data);
