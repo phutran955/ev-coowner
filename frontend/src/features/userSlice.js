@@ -7,9 +7,16 @@ import StorageKeys from '../constants/storage-key';
 export const register = createAsyncThunk('user/register', async (payload) => {
   const data = await userApi.register(payload);
 
+  // ✅ Lưu token & user vào localStorage (chuẩn bị cho backend thật)
+  if (data.jwt && data.user) {
+    localStorage.setItem(StorageKeys.TOKEN, data.jwt);
+    localStorage.setItem(StorageKeys.USER, JSON.stringify(data.user));
+    return data.user;
+  }
+
+  // fallback cho mockAPI (chưa có jwt)
   localStorage.setItem(StorageKeys.USER, JSON.stringify(data));
-  localStorage.setItem(StorageKeys.USER, JSON.stringify(data.user));
-  return data.user;
+  return data;
 });
 
 
@@ -29,26 +36,12 @@ export const login = createAsyncThunk('user/login', async (payload) => {
   return data;
 });
 
-// 🧩 Đọc dữ liệu từ localStorage an toàn
-let userData = {};
-try {
-  const stored = localStorage.getItem(StorageKeys.USER);
-  if (stored && stored !== 'undefined') {
-    userData = JSON.parse(stored);
-  }
-} catch (error) {
-  console.error("❌ Lỗi parse user từ localStorage:", error);
-  userData = {};
-}
-
-
-
 
 // 📦 Slice: Quản lý user
 const userSlice = createSlice({
   name: 'user',
   initialState: {
-    current: userData,
+    current: JSON.parse(localStorage.getItem(StorageKeys.USER)) || {},
     settings: {},
   },
   reducers: {
