@@ -72,12 +72,14 @@ const CarBookingPage = ({ currentCar = "VinFast VF8" }) => {
         styles={{ body: { padding: 24, borderRadius: 16, boxShadow: "0 2px 8px rgba(0,0,0,0.1)" } }}
       >
         <Row gutter={[24, 16]} align="middle" style={{ marginBottom: 16 }}>
+          
           <Col xs={24} md={8}>
             <img
               alt={currentCar}
               style={{ width: "100%", borderRadius: 12, objectFit: "cover", maxHeight: 180 }}
             />
           </Col>
+
           <Col xs={24} md={16}>
             <h2 style={{ margin: 0, fontWeight: 700 }}>{currentCar}</h2>
             <p style={{ color: "#555", marginTop: 4 }}>
@@ -94,6 +96,7 @@ const CarBookingPage = ({ currentCar = "VinFast VF8" }) => {
               </Button>
             </div>
           </Col>
+
         </Row>
 
         <Calendar cellRender={cellRender} />

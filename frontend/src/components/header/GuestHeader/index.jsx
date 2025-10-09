@@ -40,7 +40,7 @@ const GuestHeader = () => {
       label: <NavLink to="/admin">Admin</NavLink> },
     { 
       key: "owner", 
-      label: <NavLink to="/owner/dashboard">Owner</NavLink> },
+      label: <NavLink to="/owner/mycar">Owner</NavLink> },
   ];
 
   const userMenu = {
