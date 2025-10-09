@@ -1,6 +1,6 @@
 import React from "react";
 import { Layout, Input, Avatar, Dropdown, Space, Typography } from "antd";
-import { SearchOutlined, UserOutlined, LogoutOutlined, SettingOutlined, } from "@ant-design/icons";
+import { SearchOutlined, UserOutlined, LogoutOutlined } from "@ant-design/icons";
 import "./style.scss";
 
 const { Header } = Layout;
@@ -13,14 +13,10 @@ const DashboardHeader = () => {
       label: "Profile", icon: <UserOutlined />
     },
     {
-      key: "2",
-      label: "Settings", icon: <SettingOutlined />
-    },
-    {
       type: "divider"
     },
     {
-      key: "3",
+      key: "2",
       label: "Logout", icon: <LogoutOutlined />, danger: true
     },
   ];

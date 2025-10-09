@@ -7,8 +7,8 @@ import RegisterPage from "./pages/guest/auth/register";
 import LoginPage from "./pages/guest/auth/login";
 
 // owner pages
-import DashboardOwner from "./pages/co-owner";
-//import MyVehicles from "./pages/co-owner/MyVehicles";
+import MyCar from "./pages/co-owner/MyCar";
+import CarBooking from "./pages/co-owner/CarBooking";
 //import Settings from "./pages/co-owner/Settings";
 
 // layout
@@ -28,18 +28,19 @@ const router = createBrowserRouter([
     element: <LoginPage />,
   },
 
-  // ✅ Tất cả route /owner đều dùng chung DashboardLayout
   {
     path: "/owner",
     element: <DashboardLayout />, // layout duy nhất
     children: [
-      { 
-        path: "dashboard", 
-        element: <DashboardOwner /> },
+      {
+        path: "mycar",
+        element: <MyCar />
+      },
+      {
+        path: "carbooking",
+        element: <CarBooking />
+      },
       /*{ 
-        path: "my-vehicles", 
-        element: <MyVehicles /> },
-      { 
         path: "settings", 
         element: <Settings /> },*/
     ],

@@ -1,13 +1,25 @@
 import React from "react";
 import { Menu } from "antd";
-import {
-  HomeOutlined,
-  CarOutlined,
-  SettingOutlined
-} from "@ant-design/icons";
+import { HomeOutlined, CarOutlined, CalendarOutlined } from "@ant-design/icons";
+import { Link, useLocation } from "react-router-dom";
 import "./style.scss";
 
 const OwnerSidebar = ({ collapsed }) => {
+  const location = useLocation();
+
+  const menuItems = [
+    {
+      key: "/owner/mycar",
+      icon: <HomeOutlined />,
+      label: <Link to="/owner/mycar">Dashboard</Link>,
+    },
+    {
+      key: "/owner/carbooking",
+      icon: <CalendarOutlined />,
+      label: <Link to="/owner/carbooking">Book Cars</Link>,
+    },
+  ];
+
   return (
     <div className="owner-sidebar">
       <div className="sidebar-logo">
@@ -22,20 +34,11 @@ const OwnerSidebar = ({ collapsed }) => {
 
       <Menu
         mode="inline"
-        defaultSelectedKeys={["1"]}
         theme="dark"
+        selectedKeys={[location.pathname]}
         className="menu"
-      >
-        <Menu.Item key="1" icon={<HomeOutlined />}>
-          Dashboard
-        </Menu.Item>
-        <Menu.Item key="2" icon={<CarOutlined />}>
-          My Cars
-        </Menu.Item>
-        <Menu.Item key="3" icon={<SettingOutlined />}>
-          Settings
-        </Menu.Item>
-      </Menu>
+        items={menuItems} 
+      />
     </div>
   );
 };
