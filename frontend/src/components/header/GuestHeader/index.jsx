@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Layout, Menu, Drawer, Avatar, Dropdown, Space, Grid } from "antd";
 import { MenuOutlined, CarOutlined, UserOutlined, LogoutOutlined } from "@ant-design/icons";
 import { NavLink, useNavigate } from "react-router-dom";
-import { logout } from "../../../features/userSlice"; 
+import { logout } from "../../../features/userSlice";
 import "./style.scss";
 
 const { Header } = Layout;
@@ -19,40 +19,49 @@ const GuestHeader = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate("/login"); 
+    navigate("/login");
   };
 
   const navItems = [
-    { 
-      key: "home", 
-      label: <NavLink to="/">Home</NavLink> },
-    { 
-      key: "cars", 
-      label: <NavLink to="/cars">Stock Cars</NavLink> },
-    { 
-      key: "terms", 
-      label: <NavLink to="/terms">Our Terms</NavLink> },
-    { 
-      key: "about", 
-      label: <NavLink to="/about">About Us</NavLink> },
-    { 
-      key: "admin", 
-      label: <NavLink to="/admin">Admin</NavLink> },
-    { 
-      key: "owner", 
-      label: <NavLink to="/owner/mycar">Owner</NavLink> },
+    {
+      key: "home",
+      label: <NavLink to="/">Home</NavLink>
+    },
+    {
+      key: "cars",
+      label: <NavLink to="/cars">Stock Cars</NavLink>
+    },
+    {
+      key: "terms",
+      label: <NavLink to="/terms">Our Terms</NavLink>
+    },
+    {
+      key: "about",
+      label: <NavLink to="/about">About Us</NavLink>
+    },
+    {
+      key: "admin",
+      label: <NavLink to="/admin">Admin</NavLink>
+    },
+    {
+      key: "owner",
+      label: <NavLink to="/owner/mycar">Owner</NavLink>
+    },
   ];
 
   const userMenu = {
     items: [
-      { 
-        key: "profile", 
-        label: <NavLink to="/profile">Trang cá nhân</NavLink>, icon: <UserOutlined /> },
-      { 
-        type: "divider" },
-      { 
-        key: "logout", 
-        label: "Đăng xuất", icon: <LogoutOutlined />, onClick: handleLogout },
+      {
+        key: "profile",
+        label: <NavLink to="/profile">Trang cá nhân</NavLink>, icon: <UserOutlined />
+      },
+      {
+        type: "divider"
+      },
+      {
+        key: "logout",
+        label: "Đăng xuất", icon: <LogoutOutlined />, onClick: handleLogout
+      },
     ],
   };
 
@@ -76,8 +85,12 @@ const GuestHeader = () => {
           isLoggedIn ? (
             <Dropdown menu={userMenu} placement="bottomRight">
               <Space className="user-info">
-                <Avatar className="avatar" icon={<UserOutlined />} />
-                <span>{currentUser?.name || "Người dùng"}</span>
+                <Avatar
+                  className="avatar"
+                  src={currentUser?.image || null}
+                  icon={!currentUser?.image && <UserOutlined />}
+                />
+                <span>{currentUser?.full_name || "Người dùng"}</span>
               </Space>
             </Dropdown>
           ) : (
@@ -104,8 +117,12 @@ const GuestHeader = () => {
             {isLoggedIn ? (
               <>
                 <Space className="drawer-user-info">
-                  <Avatar className="avatar" icon={<UserOutlined />} />
-                  <span>{currentUser?.name || "Người dùng"}</span>
+                  <Avatar
+                    className="avatar"
+                    src={currentUser?.image || null}
+                    icon={!currentUser?.image && <UserOutlined />}
+                  />
+                  <span>{currentUser?.full_name || "Người dùng"}</span>
                 </Space>
                 <a className="logout-link" onClick={handleLogout}>
                   Logout

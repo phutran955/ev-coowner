@@ -2,24 +2,27 @@ import axiosClient from "./axiosClient";
 
 const userApi = {
 
-  // 🧾 Đăng ký người dùng mới
-  register(data) {
-    const url = "/user"; // resource trên MockAPI   //const url = "/auth/register";
-    return axiosClient.post(url, data);
-  },
-
-  // 🧩 Login 
-  login(data) {
-    const url = "/user";
-    return axiosClient.post(url, data);
-  },
-
-  // 🧠 Lấy thông tin user hiện tại (sau khi login)
-  /*getProfile() {
-    const url = "/auth/me"; // backend thật thường có /me hoặc /profile
+  getAll() {
+    const url = "/users";
     return axiosClient.get(url);
-  },*/
+  },
 
+  register(data) {
+    const url = "/users";
+    return axiosClient.post(url, data);
+  },
+
+  // Giả lập login (check email + password)
+  async login({ email, password }) {
+    const users = await axiosClient.get(`/users?email=${email}`);
+    const user = users[0];
+
+    if (user && user.password === password) {
+      return user; // ✅ trả về user object thật
+    } else {
+      throw new Error("Invalid email or password");
+    }
+  },
 };
 
 export default userApi;

@@ -1,35 +1,28 @@
 .dashboard-layout {
   min-height: 100vh;
+  background: #000; // toàn bộ layout nền đen
 
-  .dashboard-sidebar {
-    background: #001529; // màu mặc định của antd
-    .sidebar-logo {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 22px;
-      margin: 16px 0;
-      font-weight: bold;
-      gap: 8px;
-
-      .sidebar-title {
-        font-size: 18px;
-        letter-spacing: 0.5px;
-      }
-    }
+  .dashboard-sider {
+    // sidebar bạn đã style riêng — giữ nguyên hoặc override nhẹ
+    background: transparent;
   }
 
   .dashboard-main {
-    background: #f5f5f5;
+    background: transparent; // nền hành lang cũng đen
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 
     .dashboard-content {
-      margin: 24px;
       padding: 24px;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-      transition: all 0.3s ease;
+      /* không set background ở đây để thấy nền đen xung quanh */
+      .content-inner {
+        background: #fff;       // khung nội dung chính vẫn trắng
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        min-height: 60vh;
+      }
     }
   }
 }

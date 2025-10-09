@@ -2,7 +2,7 @@ import axios from "axios";
 import StorageKeys from "../constants/storage-key";
 
 const axiosClient = axios.create({
-  baseURL: "https://68da9e8423ebc87faa30c4d4.mockapi.io",
+  baseURL: "http://localhost:3000",
   headers: {
     "Content-Type": "application/json"
   },

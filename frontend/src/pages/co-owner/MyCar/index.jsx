@@ -1,87 +1,105 @@
-import React, { useState } from "react";
-import { Card, Row, Col, Progress, Tag, Typography, Button } from "antd";
-import { CarOutlined } from "@ant-design/icons";
+import React, { useEffect, useState } from "react";
+import { Card, Row, Col, Progress, Tag, Typography, Button, Spin, message } from "antd";
+import { ThunderboltOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
+import vehiclesApi from "../../../api/vehiclesApi";
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
-export default function CarListPage() {
-  const [currentCar, setCurrentCar] = useState("VF8");
+export default function MyCarsPage() {
+  const [cars, setCars] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [currentCar, setCurrentCar] = useState(null);
+  const navigate = useNavigate();
 
-  const cars = [
-    {
-      id: "VF8",
-      name: "VinFast VF8",
-      battery: 85,
-      range: 425,
-      status: "Đang hoạt động",
-      color: "green",
-    },
-    {
-      id: "VF9",
-      name: "VinFast VF9",
-      battery: 62,
-      range: 310,
-      status: "Sẵn sàng",
-      color: "blue",
-    },
-    {
-      id: "VF5",
-      name: "VinFast VF5",
-      battery: 47,
-      range: 210,
-      status: "Đang sạc",
-      color: "orange",
-    },
-  ];
+  useEffect(() => {
+    const fetchCars = async () => {
+      try {
+        const res = await vehiclesApi.getCars();
+        setCars(res);
+        setCurrentCar(res[0]?.id || null);
+      } catch (error) {
+        console.error("Failed to fetch cars:", error);
+        message.error("Không thể tải danh sách xe");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCars();
+  }, []);
+
+  if (loading) return <Spin tip="Đang tải xe..." />;
+
+  const current = cars.find((car) => car.id === currentCar);
+
+  // 🔹 Xử lý điều hướng tới trang đặt xe (gửi ID qua URL + state)
+  const handleBookCar = (car) => {
+    navigate(`/owner/carbooking/${car.id}`, { state: { car } });
+  };
 
   return (
     <div style={{ padding: 24 }}>
-      <Title level={3}>🚗 Xe Điện Của Tôi</Title>
-      <Text type="secondary">Hiển thị xe hiện tại và danh sách xe khả dụng</Text>
-
-      {/* Xe hiện tại */}
-      <Card
-        title="Xe hiện tại"
-        style={{ marginTop: 20 }}
-        bordered={false}
-        bodyStyle={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        {cars
-          .filter((car) => car.id === currentCar)
-          .map((car) => (
-            <>
-              <div key={car.id}>
-                <Text strong style={{ fontSize: 16 }}>
-                  {car.name}
+      {/* Thông tin xe hiện tại */}
+      {current && (
+        <Card
+          bordered
+          style={{
+            marginBottom: 24,
+            background: "#fafafa",
+            borderRadius: 12,
+          }}
+        >
+          <Row gutter={16} align="middle">
+            <Col xs={24} sm={10} md={8}>
+              <img
+                src={current.imageUrl}
+                alt={current.model}
+                style={{ width: "100%", borderRadius: 10, objectFit: "cover" }}
+              />
+            </Col>
+            <Col xs={24} sm={14} md={16}>
+              <Text strong style={{ fontSize: 18 }}>
+                {current.brand} {current.model}
+              </Text>
+              <br />
+              <Text type="secondary">
+                Biển số: {current.plateNumber} • Năm: {current.year}
+              </Text>
+              <div style={{ marginTop: 12 }}>
+                <Tag color={current.status === "available" ? "green" : "orange"}>
+                  {current.status}
+                </Tag>
+              </div>
+              <div style={{ marginTop: 16 }}>
+                <Progress
+                  percent={(current.batteryCapacityKwh / 100) * 100}
+                  size="small"
+                  strokeColor="#1677ff"
+                  showInfo={false}
+                />
+                <Text type="secondary">
+                  ⚡ Dung lượng pin: {current.batteryCapacityKwh} kWh
                 </Text>
                 <br />
                 <Text type="secondary">
-                  🔋 {car.battery}% pin - {car.range}km tầm hoạt động
+                  💰 Chi phí: {current.operatingCostPerDay}₫ / ngày • {current.operatingCostPerKm}₫ / km
                 </Text>
               </div>
-              <div style={{ textAlign: "right" }}>
-                <Progress
-                  type="circle"
-                  percent={car.battery}
-                  width={60}
-                  strokeColor={car.color}
-                />
-                <div style={{ marginTop: 8 }}>
-                  <Tag color={car.color}>{car.status}</Tag>
-                </div>
-              </div>
-            </>
-          ))}
-      </Card>
+              <Button
+                type="primary"
+                icon={<ThunderboltOutlined />}
+                style={{ marginTop: 16 }}
+                onClick={() => handleBookCar(current)}
+                disabled={current.status !== "available"}
+              >
+                Đặt xe
+              </Button>
+            </Col>
+          </Row>
+        </Card>
+      )}
 
       {/* Danh sách xe khác */}
-      <Title level={4} style={{ marginTop: 32 }}>
-        Danh sách xe
-      </Title>
       <Row gutter={[16, 16]}>
         {cars.map((car) => (
           <Col xs={24} sm={12} md={8} key={car.id}>
@@ -93,37 +111,46 @@ export default function CarListPage() {
                   car.id === currentCar
                     ? "2px solid #1677ff"
                     : "1px solid #f0f0f0",
+                borderRadius: 10,
               }}
-            >
-              <Row justify="space-between" align="middle">
-                <Col>
-                  <CarOutlined
-                    style={{ fontSize: 28, color: car.color, marginRight: 8 }}
-                  />
-                </Col>
-                <Col flex="auto">
-                  <Text strong>{car.name}</Text>
-                  <br />
-                  <Text type="secondary">
-                    🔋 {car.battery}% - {car.range}km
-                  </Text>
-                </Col>
-              </Row>
-              <div style={{ marginTop: 12 }}>
-                <Progress
-                  percent={car.battery}
-                  size="small"
-                  strokeColor={car.color}
+              cover={
+                <img
+                  src={car.imageUrl}
+                  alt={car.model}
+                  style={{
+                    height: 160,
+                    objectFit: "cover",
+                    borderRadius: "10px 10px 0 0",
+                  }}
                 />
-              </div>
-              <div style={{ textAlign: "right", marginTop: 8 }}>
-                <Tag color={car.color}>{car.status}</Tag>
+              }
+            >
+              <Text strong>
+                {car.brand} {car.model}
+              </Text>
+              <br />
+              <Text type="secondary">{car.plateNumber}</Text>
+              <div style={{ marginTop: 8 }}>
+                <Tag color={car.status === "available" ? "green" : "orange"}>
+                  {car.status}
+                </Tag>
                 {car.id === currentCar && (
-                  <Tag color="blue" style={{ marginLeft: 8 }}>
+                  <Tag color="blue" style={{ marginLeft: 6 }}>
                     Xe hiện tại
                   </Tag>
                 )}
               </div>
+              <Button
+                type="link"
+                size="small"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleBookCar(car);
+                }}
+                disabled={car.status !== "available"}
+              >
+                Đặt xe
+              </Button>
             </Card>
           </Col>
         ))}

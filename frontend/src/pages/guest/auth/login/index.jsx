@@ -32,7 +32,7 @@ function LoginPage() {
         <div className="login-form-box">
           <div style={{ textAlign: "center", marginBottom: 20 }}>
             <Text style={{ color: "#bbb" }}>
-              Welcome back My Lord
+              Welcome back 
             </Text>
           </div>
 

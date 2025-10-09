@@ -9,7 +9,6 @@ import LoginPage from "./pages/guest/auth/login";
 // owner pages
 import MyCar from "./pages/co-owner/MyCar";
 import CarBooking from "./pages/co-owner/CarBooking";
-//import Settings from "./pages/co-owner/Settings";
 
 // layout
 import DashboardLayout from "./components/layouts/Dashboard";
@@ -38,11 +37,13 @@ const router = createBrowserRouter([
       },
       {
         path: "carbooking",
-        element: <CarBooking />
+        element: <CarBooking />,
       },
-      /*{ 
-        path: "settings", 
-        element: <Settings /> },*/
+      {
+        path: "carbooking/:id",
+        element: <CarBooking />,
+      },
+
     ],
   },
 ]);
